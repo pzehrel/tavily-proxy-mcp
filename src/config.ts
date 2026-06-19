@@ -40,8 +40,32 @@ export function loadConfig(env: NodeJS.ProcessEnv): AppConfig {
   return {
     apiKeys,
     mcpUrl: new URL(env.TAVILY_MCP_URL ?? "https://mcp.tavily.com/mcp/"),
-    statePath: env.TAVILY_PROXY_STATE_PATH ?? join(homedir(), ".tavily-proxy-mcp", "state.json"),
+    statePath: env.TAVILY_PROXY_STATE_PATH ?? defaultStatePath(env),
     resetGraceSeconds,
     logLevel: logLevel as LogLevel,
   };
+}
+
+export function defaultStatePath(
+  env: NodeJS.ProcessEnv,
+  platform: NodeJS.Platform = process.platform,
+  home: string = homedir(),
+): string {
+  if (platform === "win32") {
+    return join(
+      env.LOCALAPPDATA ?? join(home, "AppData", "Local"),
+      "tavily-proxy-mcp",
+      "state.json",
+    );
+  }
+
+  if (platform === "darwin") {
+    return join(home, "Library", "Application Support", "tavily-proxy-mcp", "state.json");
+  }
+
+  return join(
+    env.XDG_STATE_HOME ?? join(home, ".local", "state"),
+    "tavily-proxy-mcp",
+    "state.json",
+  );
 }
