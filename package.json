@@ -48,8 +48,6 @@
     "check:commit": "pnpm lint && pnpm format:check && pnpm typecheck",
     "check:push": "pnpm test && pnpm build",
     "check": "pnpm lint && pnpm format:check && pnpm typecheck && pnpm test && pnpm build",
-    "release:verify": "node scripts/verify-release.mjs",
-    "release:notes": "node scripts/extract-changelog.mjs",
     "prepare": "husky || true",
     "prepublishOnly": "pnpm check"
   },

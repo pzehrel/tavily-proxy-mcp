@@ -184,6 +184,8 @@ TAVILY_API_KEYS=tvly-your-key pnpm dev
 
 版本变更见 [CHANGELOG.md](./CHANGELOG.md)。
 
+贡献与提交规范见 [CONTRIBUTING.md](./CONTRIBUTING.md)。
+
 ## License
 
 [MIT](./LICENSE)

@@ -8,6 +8,7 @@ import {
 } from "@modelcontextprotocol/sdk/types.js";
 import type { KeyManager } from "../key/key-manager.js";
 import type { Logger } from "../logger.js";
+import { packageMetadata } from "../package-metadata.js";
 import { classifyTavilyError, isErrorToolResult } from "../upstream/tavily-error-classifier.js";
 import type { ErrorDisposition } from "../upstream/types.js";
 import { ToolCache } from "./tool-cache.js";
@@ -21,13 +22,10 @@ export class McpBridge {
     private readonly logger: Logger,
   ) {
     const upstream = keyManager.current().session.info;
-    this.server = new Server(
-      { name: "tavily-proxy-mcp", version: "0.1.0" },
-      {
-        capabilities: mapCapabilities(upstream.capabilities),
-        ...(upstream.instructions ? { instructions: upstream.instructions } : {}),
-      },
-    );
+    this.server = new Server(packageMetadata, {
+      capabilities: mapCapabilities(upstream.capabilities),
+      ...(upstream.instructions ? { instructions: upstream.instructions } : {}),
+    });
     this.registerHandlers();
     this.bindToolsChanged();
   }

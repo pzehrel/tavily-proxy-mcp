@@ -2,33 +2,45 @@ name: Release
 
 on:
   push:
-    tags:
-      - "v*"
+    branches:
+      - main
 
 permissions:
   contents: write
+  pull-requests: write
   id-token: write
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
 jobs:
   release:
-    name: Publish npm package and GitHub Release
+    name: Prepare release and publish npm package
     runs-on: ubuntu-latest
     timeout-minutes: 15
     environment: npm
 
     steps:
-      - name: Checkout
-        uses: actions/checkout@v6
+      - name: Create or update release pull request
+        id: release
+        uses: googleapis/release-please-action@v4
         with:
-          fetch-depth: 0
+          config-file: release-please-config.json
+          manifest-file: .release-please-manifest.json
+
+      - name: Checkout release
+        if: steps.release.outputs.release_created == 'true'
+        uses: actions/checkout@v6
 
       - name: Set up pnpm
+        if: steps.release.outputs.release_created == 'true'
         uses: pnpm/action-setup@v4
         with:
           version: 10.33.2
           run_install: false
 
       - name: Set up Node.js
+        if: steps.release.outputs.release_created == 'true'
         uses: actions/setup-node@v6
         with:
           node-version: 24
@@ -36,18 +48,19 @@ jobs:
           package-manager-cache: false
 
       - name: Install dependencies
+        if: steps.release.outputs.release_created == 'true'
         run: pnpm install --frozen-lockfile
 
-      - name: Verify release metadata
-        run: pnpm release:verify "${GITHUB_REF_NAME}"
-
       - name: Run quality checks
+        if: steps.release.outputs.release_created == 'true'
         run: pnpm check
 
       - name: Verify package contents
+        if: steps.release.outputs.release_created == 'true'
         run: pnpm pack --dry-run
 
       - name: Check npm package version
+        if: steps.release.outputs.release_created == 'true'
         id: npm-version
         shell: bash
         run: |
@@ -61,17 +74,7 @@ jobs:
           fi
 
       - name: Publish to npm
-        if: steps.npm-version.outputs.exists != 'true'
+        if: >-
+          steps.release.outputs.release_created == 'true' &&
+          steps.npm-version.outputs.exists != 'true'
         run: npm publish --access public
-
-      - name: Extract release notes
-        run: pnpm release:notes "${GITHUB_REF_NAME}" > release-notes.md
-
-      - name: Create GitHub Release
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: >-
-          gh release create "${GITHUB_REF_NAME}"
-          --verify-tag
-          --title "${GITHUB_REF_NAME}"
-          --notes-file release-notes.md
