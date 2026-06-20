@@ -1,9 +1,10 @@
 # tavily-proxy-mcp
 
-让 Tavily 官方 MCP 支持多个 API Key。
+Tavily 官方 MCP 的多 API Key 工具代理。
 
-当当前 Key 的额度耗尽、受到限流或失效时，本工具会自动切换到下一个 Key。你的
-Agent 仍然看到 Tavily 官方提供的工具，不需要修改提示词或调用方式。
+它将 Tavily 上游提供的工具定义、参数和调用结果转发给 Agent，并负责管理多个 API
+Key。当当前 Key 的额度耗尽、受到限流或失效时，代理会自动切换到下一个 Key，
+无需修改 Agent 的提示词或工具调用方式。
 
 ## 快速开始
 

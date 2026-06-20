@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Reorganized the README around installation, MCP configuration, runtime behavior, and
   troubleshooting.
+- Clarified that the project is a tool-level proxy for Tavily's official MCP server.
 
 ## [0.1.0] - 2026-06-20
 
