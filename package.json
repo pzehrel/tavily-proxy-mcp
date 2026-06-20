@@ -1,6 +1,6 @@
 {
   "name": "tavily-proxy-mcp",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Local stdio MCP proxy with lazy Tavily API key failover",
   "keywords": [
     "tavily",
