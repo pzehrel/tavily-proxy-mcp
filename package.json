@@ -2,6 +2,16 @@
   "name": "tavily-proxy-mcp",
   "version": "0.1.0",
   "description": "Local stdio MCP proxy with lazy Tavily API key failover",
+  "keywords": [
+    "tavily",
+    "mcp",
+    "model-context-protocol",
+    "ai-agent",
+    "web-search",
+    "api-key",
+    "failover",
+    "proxy"
+  ],
   "license": "MIT",
   "author": "pzehrel",
   "repository": {
