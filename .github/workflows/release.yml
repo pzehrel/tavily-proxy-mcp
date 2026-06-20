@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main
+  workflow_dispatch:
 
 permissions:
   contents: write
@@ -37,6 +38,9 @@ jobs:
           registry-url: https://registry.npmjs.org
           package-manager-cache: false
 
+      - name: Set up npm
+        run: npm install --global npm@11.17.0
+
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
@@ -45,17 +49,22 @@ jobs:
 
       - name: Create or update release pull request
         id: release
+        if: github.event_name == 'push'
         uses: googleapis/release-please-action@v4
         with:
           config-file: release-please-config.json
           manifest-file: .release-please-manifest.json
 
       - name: Verify package contents
-        if: steps.release.outputs.release_created == 'true'
+        if: >-
+          github.event_name == 'workflow_dispatch' ||
+          steps.release.outputs.release_created == 'true'
         run: pnpm pack --dry-run
 
       - name: Check npm package version
-        if: steps.release.outputs.release_created == 'true'
+        if: >-
+          github.event_name == 'workflow_dispatch' ||
+          steps.release.outputs.release_created == 'true'
         id: npm-version
         shell: bash
         run: |
@@ -70,6 +79,7 @@ jobs:
 
       - name: Publish to npm
         if: >-
-          steps.release.outputs.release_created == 'true' &&
+          (github.event_name == 'workflow_dispatch' ||
+          steps.release.outputs.release_created == 'true') &&
           steps.npm-version.outputs.exists != 'true'
         run: npm publish --access public
