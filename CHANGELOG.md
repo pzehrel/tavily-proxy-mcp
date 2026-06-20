@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+- Reorganized the README around installation, MCP configuration, runtime behavior, and
+  troubleshooting for end users.
+
 ## [0.1.0] - 2026-06-20
 
 ### Added
