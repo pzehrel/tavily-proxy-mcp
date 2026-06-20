@@ -40,7 +40,7 @@ export function loadConfig(env: NodeJS.ProcessEnv): AppConfig {
   return {
     apiKeys,
     mcpUrl: new URL(env.TAVILY_MCP_URL ?? "https://mcp.tavily.com/mcp/"),
-    statePath: env.TAVILY_PROXY_STATE_PATH ?? defaultStatePath(),
+    statePath: defaultStatePath(),
     resetGraceSeconds,
     logLevel: logLevel as LogLevel,
   };
