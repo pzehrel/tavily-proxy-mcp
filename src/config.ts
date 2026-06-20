@@ -1,4 +1,4 @@
-import { homedir } from "node:os";
+import { tmpdir } from "node:os";
 import { join } from "node:path";
 
 export type LogLevel = "error" | "warn" | "info" | "debug";
@@ -40,32 +40,15 @@ export function loadConfig(env: NodeJS.ProcessEnv): AppConfig {
   return {
     apiKeys,
     mcpUrl: new URL(env.TAVILY_MCP_URL ?? "https://mcp.tavily.com/mcp/"),
-    statePath: env.TAVILY_PROXY_STATE_PATH ?? defaultStatePath(env),
+    statePath: env.TAVILY_PROXY_STATE_PATH ?? defaultStatePath(),
     resetGraceSeconds,
     logLevel: logLevel as LogLevel,
   };
 }
 
 export function defaultStatePath(
-  env: NodeJS.ProcessEnv,
-  platform: NodeJS.Platform = process.platform,
-  home: string = homedir(),
+  temporaryDirectory: string = tmpdir(),
+  userId: string = typeof process.getuid === "function" ? String(process.getuid()) : "user",
 ): string {
-  if (platform === "win32") {
-    return join(
-      env.LOCALAPPDATA ?? join(home, "AppData", "Local"),
-      "tavily-proxy-mcp",
-      "state.json",
-    );
-  }
-
-  if (platform === "darwin") {
-    return join(home, "Library", "Application Support", "tavily-proxy-mcp", "state.json");
-  }
-
-  return join(
-    env.XDG_STATE_HOME ?? join(home, ".local", "state"),
-    "tavily-proxy-mcp",
-    "state.json",
-  );
+  return join(temporaryDirectory, `tavily-proxy-mcp-${userId}`, "state.json");
 }

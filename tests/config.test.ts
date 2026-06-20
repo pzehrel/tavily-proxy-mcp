@@ -13,21 +13,9 @@ describe("loadConfig", () => {
     expect(config.apiKeys).toEqual(["tvly-a", "tvly-b"]);
   });
 
-  it("uses the standard macOS application support directory", () => {
-    expect(defaultStatePath({}, "darwin", "/Users/test")).toBe(
-      "/Users/test/Library/Application Support/tavily-proxy-mcp/state.json",
-    );
-  });
-
-  it("respects XDG_STATE_HOME on Linux", () => {
-    expect(defaultStatePath({ XDG_STATE_HOME: "/state" }, "linux", "/home/test")).toBe(
-      "/state/tavily-proxy-mcp/state.json",
-    );
-  });
-
-  it("uses LOCALAPPDATA on Windows", () => {
-    expect(defaultStatePath({ LOCALAPPDATA: "C:\\Local" }, "win32", "C:\\Users\\test")).toContain(
-      "tavily-proxy-mcp",
+  it("uses the operating system temporary directory", () => {
+    expect(defaultStatePath("/private/tmp", "501")).toBe(
+      "/private/tmp/tavily-proxy-mcp-501/state.json",
     );
   });
 });
