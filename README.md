@@ -148,7 +148,7 @@ Environment: npm
 npm login
 npm whoami
 pnpm check
-NPM_CONFIG_PROVENANCE=false npm publish --access public
+npm publish --access public --provenance=false
 ```
 
 完成首次发布后，在 npm 配置 Trusted Publisher，再推送 `v0.1.0` Tag。Release
