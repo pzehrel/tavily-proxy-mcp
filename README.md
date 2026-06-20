@@ -142,6 +142,19 @@ Workflow: release.yml
 Environment: npm
 ```
 
+由于 npm 需要先存在包页面才能配置 Trusted Publisher，首次发布需要手工 bootstrap：
+
+```bash
+npm login
+npm whoami
+pnpm check
+NPM_CONFIG_PROVENANCE=false npm publish --access public
+```
+
+完成首次发布后，在 npm 配置 Trusted Publisher，再推送 `v0.1.0` Tag。Release
+工作流检测到 npm 已存在 `0.1.0` 后会跳过重复发布，但仍会创建 GitHub Release。
+之后的新版本 Tag 会直接通过 OIDC 自动发布到 npm。
+
 ## 安全
 
 - 不要将 API Key 提交到仓库。
