@@ -98,6 +98,21 @@ TAVILY_API_KEYS=tvly-your-key pnpm dev
 
 质量门禁包含 ESLint、Prettier、TypeScript、Vitest 和生产构建。
 
+## Git Hooks
+
+安装依赖时，Husky 会自动配置 Git Hooks：
+
+- `pre-commit`：运行 ESLint、Prettier 检查和 TypeScript 类型检查。
+- `pre-push`：运行完整测试和生产构建。
+
+也可以手动执行相同检查：
+
+```bash
+pnpm check:commit
+pnpm check:push
+pnpm check
+```
+
 ## 安全
 
 - 不要将 API Key 提交到仓库。
