@@ -2,12 +2,23 @@
   "name": "tavily-proxy-mcp",
   "version": "0.1.0",
   "description": "Local stdio MCP proxy with lazy Tavily API key failover",
+  "license": "MIT",
+  "author": "pzehrel",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pzehrel/tavily-proxy-mcp.git"
+  },
+  "homepage": "https://github.com/pzehrel/tavily-proxy-mcp#readme",
+  "bugs": {
+    "url": "https://github.com/pzehrel/tavily-proxy-mcp/issues"
+  },
   "type": "module",
   "bin": {
     "tavily-proxy-mcp": "dist/cli.js"
   },
   "files": [
     "dist",
+    "CHANGELOG.md",
     "README.md",
     "LICENSE"
   ],
@@ -27,8 +38,14 @@
     "check:commit": "pnpm lint && pnpm format:check && pnpm typecheck",
     "check:push": "pnpm test && pnpm build",
     "check": "pnpm lint && pnpm format:check && pnpm typecheck && pnpm test && pnpm build",
-    "prepare": "husky",
+    "release:verify": "node scripts/verify-release.mjs",
+    "release:notes": "node scripts/extract-changelog.mjs",
+    "prepare": "husky || true",
     "prepublishOnly": "pnpm check"
+  },
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
   },
   "engines": {
     "node": ">=22"

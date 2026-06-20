@@ -113,6 +113,35 @@ pnpm check:push
 pnpm check
 ```
 
+## 发布
+
+发布使用语义化版本和 `v` 前缀 Git Tag，例如 `v0.1.0`。
+
+1. 更新 `package.json` 中的版本。
+2. 将 `CHANGELOG.md` 的 `[Unreleased]` 内容整理到对应版本章节。
+3. 提交并推送代码。
+4. 创建并推送与版本一致的 Tag：
+
+```bash
+git tag v0.1.0
+git push origin v0.1.0
+```
+
+Tag 会触发 GitHub Actions：
+
+- 校验 Tag、package version 和 Changelog 一致。
+- 运行完整质量门禁。
+- 通过 npm Trusted Publishing 发布公开包并生成 provenance。
+- 使用 Changelog 对应章节创建 GitHub Release。
+
+首次发布前，需要在 npm 包的 Trusted Publisher 设置中授权：
+
+```text
+Repository: pzehrel/tavily-proxy-mcp
+Workflow: release.yml
+Environment: npm
+```
+
 ## 安全
 
 - 不要将 API Key 提交到仓库。
