@@ -5,17 +5,6 @@
 当当前 Key 的额度耗尽、受到限流或失效时，本工具会自动切换到下一个 Key。你的
 Agent 仍然看到 Tavily 官方提供的工具，不需要修改提示词或调用方式。
 
-## 适合谁
-
-如果你：
-
-- 已经在 Claude Code、Codex、Cursor 或其他 MCP 客户端中使用 Tavily；
-- 有多个 Tavily API Key；
-- 希望一个 Key 用完后自动使用下一个；
-- 不希望自己维护 Tavily 工具定义；
-
-那么可以用本工具替代直接连接 Tavily 官方 MCP。
-
 ## 快速开始
 
 ### 准备工作
